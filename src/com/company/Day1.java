@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Day1 implements Task {
 
-    List<Integer> inputs = Arrays.asList(1981,
+    static List<Integer> inputs = Arrays.asList(1981,
             1415,
             1767,
             1725,

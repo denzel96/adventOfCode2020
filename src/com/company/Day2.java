@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day2 implements Task {
-    List<String> input = Arrays.asList("3-4 j: tjjj",
+    static List<String> input = Arrays.asList("3-4 j: tjjj",
             "7-10 h: nhhhhhgghphhh",
             "7-13 j: tpscbbstbdjsjbtcpj",
             "4-13 l: ckllmqzlvcsxpplqg",
