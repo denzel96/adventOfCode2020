@@ -330,32 +330,27 @@ public class Day3 implements Task {
             "..#..#...##...#.##........#....");
     Integer lineWidth = input.get(0).length();
     static Integer bottom = input.size();
-    Coord c = new Coord(0, 0);
 
-    public Integer play(Integer right, Integer down){
+    public Integer play(Integer right, Integer down) {
+        Coord c = new Coord(0, 0);
         int count = 0;
         while (c.isNotBottom()) {
             c.add(right, down);
             if (c.isNotBottom() && isTree(c)) {
                 count++;
             }
-            System.out.println(count);
         }
         return count;
     }
 
     @Override
     public Object getTask1Answer() {
-        return play(3,1);
+        return play(3, 1);
     }
 
     @Override
     public Object getTask2Answer() {
-        System.out.println(play(1,1));
-        System.out.println(play(5,1));
-        System.out.println(play(7,1));
-        System.out.println(play(1,2));
-        return play(1,1) * play(3,1) * play(5,1) * play(7,1) * play(1,2);
+        return (long) play(1, 1) * play(3, 1) * play(5, 1) * play(7, 1) * play(1, 2);
     }
 
     static class Coord {
