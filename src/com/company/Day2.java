@@ -1016,14 +1016,22 @@ public class Day2 implements Task {
         }
         int count = 0;
         for (InputWrapper i : inputWrappers) {
-            if (i.isVaildPw()) count++;
+            if (i.isVaildOldPw()) count++;
         }
         return count;
     }
 
     @Override
     public Object getTask2Answer() {
-        return null;
+        List<InputWrapper> inputWrappers = new ArrayList<>();
+        for (String s : input) {
+            inputWrappers.add(new InputWrapper(s));
+        }
+        int count = 0;
+        for (InputWrapper i : inputWrappers) {
+            if (i.isVaildNewPw()) count++;
+        }
+        return count;
     }
 
     static class InputWrapper {
@@ -1042,7 +1050,7 @@ public class Day2 implements Task {
             this.pw = m.group(4);
         }
 
-        boolean isVaildPw() {
+        boolean isVaildOldPw() {
             int count = 0;
             for (int i = 0; i < pw.length(); i++) {
                 if (pw.toCharArray()[i] == c) count++;
@@ -1050,8 +1058,14 @@ public class Day2 implements Task {
             return count >= min && count <= max;
         }
 
+        public boolean isVaildNewPw() {
+            return pw.toCharArray()[min-1] == c ^ pw.toCharArray()[max-1] == c;
+        }
+
         public String toString() {
             return min + "-" + max + " " + c + ": " + pw;
         }
+
+
     }
 }
