@@ -1229,10 +1229,17 @@ public class Day4 implements Task {
         }
     }
 
-    static String getPart(String abbrev, String line){
-        Pattern p = Pattern.compile("(.?)*"+abbrev+":([^\\s]+)(.)*");
+    static String getPart(String abbrev, String line) {
+        Pattern p;
+        switch (abbrev) {
+            case "bry": {
+//                p = Pattern.compile("(.?)*" + abbrev + ":\\d\\d\\d\\d([^\\s]+)(.)*");
+            }
+            default:
+                p = Pattern.compile("(.?)*" + abbrev + ":([^\\s]+)(.)*");
+        }
         Matcher m = p.matcher(line);
-        return m.matches()? m.group(2):null;
+        return m.matches() ? m.group(2) : null;
 
     }
 }
