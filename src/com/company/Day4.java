@@ -1,14 +1,20 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Day4 implements Task {
+public class Day4 extends Task {
+    List<String> input;
 
-    String input = "eyr:2021 hgt:168cm hcl:#fffffd pid:180778832 byr:1923 ecl:amb iyr:2019 cid:241 " +
+    @Override
+    void parseInput() {
+        input = getInput("day4.txt");
+    }
+
+    //TODO: move input into file, modify processing
+    String oldinput = "eyr:2021 hgt:168cm hcl:#fffffd pid:180778832 byr:1923 ecl:amb iyr:2019 cid:241 " +
             "--- " +
             "hcl:#341e13 ecl:lzr eyr:2024 iyr:2014 pid:161cm byr:1991 cid:59 hgt:150cm " +
             "--- " +
@@ -1166,9 +1172,9 @@ public class Day4 implements Task {
         return count;
     }
 
-    private List<Passport> getPassports(String input) {
+    private List<Passport> getPassports(List<String> input) {
         List<Passport> toReturn = new ArrayList<>();
-        for (String line : input.split("---")) {
+        for (String line : oldinput.split("---")) {
             toReturn.add(new Passport(
                     getPart("byr", line),
                     getPart("iyr", line),
@@ -1224,9 +1230,9 @@ public class Day4 implements Task {
                     && between(iyr, 2010, 2020)
                     && between(eyr, 2020, 2030)
                     && isValidHgt(hgt)
-                    && hcl!=null
-                    && ecl!=null
-                    && pid!=null;
+                    && hcl != null
+                    && ecl != null
+                    && pid != null;
         }
 
         public static boolean between(String i, int minValueInclusive, int maxValueInclusive) {
@@ -1272,6 +1278,7 @@ public class Day4 implements Task {
     cid (Country ID) - ignored, missing or not.
     */
 
+    //TODO: something is wrong here. First task answer is wrong here but right in previous version...
     static String getPart(String abbrev, String line) {
         Pattern p = switch (abbrev) {
             case "byr", "iyr", "eyr" -> Pattern.compile("(.?)*" + abbrev + ":(\\d{4})([^\\\\s]+)(.)*");
