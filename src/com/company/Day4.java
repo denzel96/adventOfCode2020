@@ -1185,7 +1185,12 @@ public class Day4 implements Task {
 
     @Override
     public Object getTask2Answer() {
-        return null;
+        List<Passport> passportList = getPassports(input);
+        int count = 0;
+        for (Passport p : passportList) {
+            if (p.isValid2()) count++;
+        }
+        return count;
     }
 
     static class Passport {
@@ -1214,6 +1219,31 @@ public class Day4 implements Task {
                     !byr.isBlank() && !iyr.isBlank() && !eyr.isBlank() && !hgt.isBlank() && !hcl.isBlank() && !ecl.isBlank() && !pid.isBlank();
         }
 
+        boolean isValid2() {
+            return between(byr, 1920, 2002)
+                    && between(iyr, 2010, 2020)
+                    && between(eyr, 2020, 2030)
+                    && isValidHgt(hgt)
+                    && hcl!=null
+                    && ecl!=null
+                    && pid!=null;
+        }
+
+        public static boolean between(String i, int minValueInclusive, int maxValueInclusive) {
+            return i != null && !i.isEmpty() && (Integer.parseInt(i) >= minValueInclusive && Integer.parseInt(i) <= maxValueInclusive);
+        }
+
+        public static boolean isValidHgt(String s) {
+            if (s != null) {
+                if (s.contains("cm")) {
+                    return between(s.split("cm")[0], 150, 193);
+                } else {
+                    return between(s.split("in")[0], 59, 76);
+                }
+            }
+            return false;
+        }
+
         @Override
         public String toString() {
             return "Passport{" +
@@ -1229,17 +1259,36 @@ public class Day4 implements Task {
         }
     }
 
+    /*
+    byr (Birth Year) - four digits; at least 1920 and at most 2002.
+    iyr (Issue Year) - four digits; at least 2010 and at most 2020.
+    eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
+    hgt (Height) - a number followed by either cm or in:
+    If cm, the number must be at least 150 and at most 193.
+    If in, the number must be at least 59 and at most 76.
+    hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
+    ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
+    pid (Passport ID) - a nine-digit number, including leading zeroes.
+    cid (Country ID) - ignored, missing or not.
+    */
+
     static String getPart(String abbrev, String line) {
-        Pattern p;
-        switch (abbrev) {
-            case "bry": {
-//                p = Pattern.compile("(.?)*" + abbrev + ":\\d\\d\\d\\d([^\\s]+)(.)*");
-            }
-            default:
-                p = Pattern.compile("(.?)*" + abbrev + ":([^\\s]+)(.)*");
-        }
+        Pattern p = switch (abbrev) {
+            case "byr", "iyr", "eyr" -> Pattern.compile("(.?)*" + abbrev + ":(\\d{4})([^\\\\s]+)(.)*");
+            case "hgt" -> Pattern.compile("(.?)*" + abbrev + ":(\\d{2,3})(in|cm)([^\\\\s]+)(.)*");
+            case "hcl" -> Pattern.compile("(.?)*" + abbrev + ":(#[0-9a-f]{6})([^\\\\s]+)(.)*");
+            case "ecl" -> Pattern.compile("(.?)*" + abbrev + ":(amb|blu|brn|gry|grn|hzl|oth)([^\\\\s]+)(.)*");
+            case "pid" -> Pattern.compile("(.?)*" + abbrev + ":([0-9]{9})([^\\\\s]+)(.)*");
+            case "cid" -> Pattern.compile("(.?)*" + abbrev + ":([0-9]{3})([^\\\\s]+)(.)*");
+            default -> null;
+        };
         Matcher m = p.matcher(line);
-        return m.matches() ? m.group(2) : null;
+        return m.matches() ?
+                switch (abbrev) {
+                    case "byr", "iyr", "eyr", "hcl", "ecl", "pid", "cid" -> m.group(2);
+                    case "hgt" -> m.group(2) + m.group(3);
+                    default -> "";
+                } : null;
 
     }
 }
