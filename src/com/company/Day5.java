@@ -24,7 +24,16 @@ public class Day5 extends Task {
 
     @Override
     Object getTask2Answer() {
-        return null;
+        List<Integer> asd = new ArrayList<>();
+        input.forEach(
+                s -> asd.add(getSeatId(getRowAndCol(s)[0], getRowAndCol(s)[1]))
+        );
+        asd.sort(null);
+        for (int i = asd.get(0); i <= asd.get(asd.size()-1); i++) {
+            if (i != asd.get(i-asd.get(0))) return i;
+        }
+
+        return -1;
     }
 
     int search(char[] chars, double low, double high) {
