@@ -46,8 +46,6 @@ public class Day5 extends Task {
         char[] cols = new char[3];
         input.getChars(0, 7, rows, 0);
         input.getChars(7, 10, cols, 0);
-        System.out.println(rows);
-        System.out.println(cols);
 
         int row = search(rows, 0, 127);
         int col = search(cols, 0, 7);
