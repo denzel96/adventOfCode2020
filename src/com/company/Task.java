@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +22,10 @@ public abstract class Task {
         parseInput();
     }
 
-    static List<String> getInput(String fileName) {
-        List<String> result = null;
+    static ArrayList<String> getInput(String fileName) {
+        ArrayList<String> result = null;
         try (Stream<String> lines = Files.lines(Paths.get("src/com/inputs/" + fileName))) {
-            result = lines.collect(Collectors.toList());
+            result = (ArrayList<String>) lines.collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
